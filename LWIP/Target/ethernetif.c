@@ -202,22 +202,19 @@ static void low_level_init(struct netif *netif)
 		uint32_t detected_addr = 1;
     uint32_t reg_val = 0;
 
-    // ����ɨ�� 0 �� 31 �����ܵ� PHY ��ַ
     for (uint32_t addr = 0; addr < 32; addr++)
     {
-      // ��ȡ DP83848 �� PHYI1R �Ĵ������� Register 2��PHY ID 1 �Ĵ�����
       if (HAL_ETH_ReadPHYRegister(&heth, addr, DP83848_PHYI1R, &reg_val) == HAL_OK)
       {
-        // �ų����߸���ֵ��0xFFFF����ȫ�����ֵ��0x0000��
         if (reg_val != 0xFFFF && reg_val != 0x0000)
         {
           detected_addr = addr;
-          break; // �ɹ��ҵ��������˳�ѭ��
+          break; 
         }
       }
     }
 
-    DP83848.DevAddr = detected_addr; // ʹ���Զ�ɨ��������ʵ�����ַ
+    DP83848.DevAddr = detected_addr;
 		
 /* USER CODE END PHY_PRE_CONFIG */
   /* Set PHY IO functions */
