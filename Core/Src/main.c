@@ -24,8 +24,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "app_example.h"
-void App_Ethernet_Server_Start(void);
+#include "period.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -91,21 +90,14 @@ int main(void)
   MX_LWIP_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-	__HAL_ETH_DMA_ENABLE_IT(&heth,ETH_DMA_IT_NIS|ETH_DMA_IT_R);
-	com.init();
-	uint32_t last_tick=0;
+	All_Task_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		com.machine();
-		if(HAL_GetTick()-last_tick>=500){
-			printf("ing\n");
-			last_tick=HAL_GetTick();
-			com.send(CMD_COORDINATE,"bww","1","99","100");
-		}
+		periodic_event_task_process();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

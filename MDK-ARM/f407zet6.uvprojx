@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../LWIP/App;../LWIP/Target;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/BSP/Components/dp83848;../Middlewares/Third_Party/LwIP/src/include/netif/ppp;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/STM32F4xx_HAL_Driver/Src;../../f407zet6_1/Middlewares/Third_Party/LwIP/src/include;../Middlewares/Third_Party/LwIP/src/include;../Middlewares/Third_Party/LwIP/system;../Middlewares/Third_Party/LwIP/src/include/lwip;../Middlewares/Third_Party/LwIP/src/include/lwip/apps;../Middlewares/Third_Party/LwIP/src/include/lwip/priv;../Middlewares/Third_Party/LwIP/src/include/lwip/prot;../Middlewares/Third_Party/LwIP/src/include/netif;../Middlewares/Third_Party/LwIP/src/include/compat/posix;../Middlewares/Third_Party/LwIP/src/include/compat/posix/arpa;../Middlewares/Third_Party/LwIP/src/include/compat/posix/net;../Middlewares/Third_Party/LwIP/src/include/compat/posix/sys;../Middlewares/Third_Party/LwIP/src/include/compat/stdc;../Middlewares/Third_Party/LwIP/system/arch;..\custom\comunication</IncludePath>
+              <IncludePath>../Core/Inc;../LWIP/App;../LWIP/Target;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/BSP/Components/dp83848;../Middlewares/Third_Party/LwIP/src/include/netif/ppp;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/STM32F4xx_HAL_Driver/Src;../../f407zet6_1/Middlewares/Third_Party/LwIP/src/include;../Middlewares/Third_Party/LwIP/src/include;../Middlewares/Third_Party/LwIP/system;../Middlewares/Third_Party/LwIP/src/include/lwip;../Middlewares/Third_Party/LwIP/src/include/lwip/apps;../Middlewares/Third_Party/LwIP/src/include/lwip/priv;../Middlewares/Third_Party/LwIP/src/include/lwip/prot;../Middlewares/Third_Party/LwIP/src/include/netif;../Middlewares/Third_Party/LwIP/src/include/compat/posix;../Middlewares/Third_Party/LwIP/src/include/compat/posix/arpa;../Middlewares/Third_Party/LwIP/src/include/compat/posix/net;../Middlewares/Third_Party/LwIP/src/include/compat/posix/sys;../Middlewares/Third_Party/LwIP/src/include/compat/stdc;../Middlewares/Third_Party/LwIP/system/arch;..\custom\comunication;..\custom\period</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -3451,12 +3451,27 @@
             <File>
               <FileName>app_example.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\f407zet6_1\comunication\app_example.c</FilePath>
+              <FilePath>..\custom\comunication\app_example.c</FilePath>
             </File>
             <File>
               <FileName>Com_protocol.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\f407zet6_1\comunication\Com_protocol.c</FilePath>
+              <FilePath>..\custom\comunication\Com_protocol.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>period</GroupName>
+          <Files>
+            <File>
+              <FileName>period.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\custom\period\period.c</FilePath>
+            </File>
+            <File>
+              <FileName>headfile.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\custom\period\headfile.h</FilePath>
             </File>
           </Files>
         </Group>
