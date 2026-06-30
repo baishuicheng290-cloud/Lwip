@@ -1,0 +1,30 @@
+# Build files
+MDK-ARM/*/DebugConfig/
+MDK-ARM/*/*.o
+MDK-ARM/*/*.d
+MDK-ARM/*/*.crf
+MDK-ARM/*/*.axf
+MDK-ARM/*/*.hex
+MDK-ARM/*/*.htm
+MDK-ARM/*/*.lnp
+MDK-ARM/*/*.map
+MDK-ARM/*/*.sct
+MDK-ARM/*/*.dep
+MDK-ARM/*/*.build_log.htm
+MDK-ARM/*/*.lst
+MDK-ARM/*.uvoptx
+MDK-ARM/*.uvguix.*
+
+# IDE
+.vscode/
+.trae/
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# Temp files
+*.tmp
+*.bak
+*.swp
+*~
