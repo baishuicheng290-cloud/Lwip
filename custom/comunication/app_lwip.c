@@ -1,15 +1,7 @@
-#include "main.h"          
-#include "lwip/tcp.h"        
-#include "lwip/pbuf.h"        
-#include "Com_protocol.h"    
-#include "app_example.h"      
-#include "lwip.h"
-#include <string.h>
-#include <stdarg.h> 
+#include "headfile.h"
+#include "app_lwip.h"
 
-volatile Vision_Target_t current_vision = {0};
-
-LP_Instance_t g_uart1_protocol;
+LP_Instance_t g_lwip_protocol;
 struct tcp_pcb *g_tcp_pcb = NULL;
 
 void Ethernet_TCP_Send(const uint8_t *data, uint16_t len) {
@@ -25,19 +17,6 @@ static const LP_VTable_t g_net_vtable = {
     .tx_bytes = Ethernet_TCP_Send
 };
 
-static void Handle_Coordinate(const uint8_t *payload, uint8_t len) {
-    LP_Reader_t r;
-    LP_Reader.init(&r, payload, len);
-
-    current_vision.is_found  = LP_Reader.read_u8(&r);
-    current_vision.target_x  = LP_Reader.read_u16(&r);
-    current_vision.target_y  = LP_Reader.read_u16(&r);
-    current_vision.timestamp = HAL_GetTick(); 
-		printf("坐标数据%d %d\n",current_vision.target_x,current_vision.target_y);
-}
-
-/* ==================== 4. TCP ���������ӹ��� ==================== */
-
 static void tcp_server_err(void *arg, err_t err) {
     g_tcp_pcb = NULL; 
 }
@@ -49,7 +28,7 @@ static err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, er
 
         struct pbuf *q;
         for (q = p; q != NULL; q = q->next) {
-            LP_ParseBuffer(&g_uart1_protocol, q->payload, q->len);
+            LP_ParseBuffer(&g_lwip_protocol, q->payload, q->len);
         }
 
         pbuf_free(p);
@@ -70,7 +49,7 @@ static err_t tcp_server_accept(void *arg, struct tcp_pcb *newpcb, err_t err) {
     return ERR_OK;
 }
 
-void App_Ethernet_Server_Start(void) {
+static void App_Ethernet_Server_Start(void) {
     struct tcp_pcb *pcb = tcp_new();
     if (pcb != NULL) {
         if (tcp_bind(pcb, IP_ADDR_ANY, 8080) == ERR_OK) {
@@ -80,15 +59,7 @@ void App_Ethernet_Server_Start(void) {
     }
 }
 
-void App_Init(void) {
-    LP_Init(&g_uart1_protocol, &g_net_vtable);
-
-    LP_RegisterHandler(&g_uart1_protocol, CMD_COORDINATE, COORD_PAYLOAD_LEN, Handle_Coordinate);
-	
-	App_Ethernet_Server_Start();
-}
-
-void App_Send_Format(uint8_t cmd, const char *format, ...) {
+static void App_Send_Format(uint8_t cmd, const char *format, ...) {
     uint8_t send_buf[LP_MAX_PAYLOAD_LEN];
     LP_Writer_t w;
     va_list args;
@@ -121,7 +92,7 @@ void App_Send_Format(uint8_t cmd, const char *format, ...) {
     }
     va_end(args);
     
-    LP_SendPacket(&g_uart1_protocol, cmd, send_buf, w.offset);
+    LP_SendPacket(&g_lwip_protocol, cmd, send_buf, w.offset);
 }
 
 volatile static uint8_t eth_rx_flag=0;
@@ -151,16 +122,34 @@ static void App_Net_Engine(void) {
     }
 }
 
-// �����Լ������ṹ�嶨��
-void App_irq(uint8_t received_char) {}
-	
+//回调
 void HAL_ETH_RxCpltCallback(ETH_HandleTypeDef *heth){
 	 eth_rx_flag=1;
 }
 
-Com_Interface_t com = {
-    .init = App_Init,
-		.send = App_Send_Format,
-		.machine= App_Net_Engine,
-    .irq  = App_irq,
+static void lwip_init(){
+	__HAL_ETH_DMA_ENABLE_IT(&heth, ETH_DMA_IT_NIS | ETH_DMA_IT_R);
+}
+
+static Lwip_Interface_t lwip={
+	.init=lwip_init,
+	.start=App_Ethernet_Server_Start,
+	.send=App_Send_Format,
+	.machine=App_Net_Engine,
 };
+
+const Lwip_Interface_t* Get_Lwip_Interface(){
+	return &lwip;
+}
+
+const LP_VTable_t* Get_Lwip_Net_Vtable(){
+	return &g_net_vtable;
+}
+
+LP_Instance_t* Get_Lwip_LP_Instance(){
+	return &g_lwip_protocol;
+}
+
+struct tcp_pcb* Get_Lwip_Tcp_Pcb(){
+	return g_tcp_pcb;
+}

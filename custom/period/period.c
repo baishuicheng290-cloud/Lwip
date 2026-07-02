@@ -5,7 +5,7 @@ extern void periodic_event_task_init();
 
 
 void comunitcate(){
-	com.machine();
+	Get_Lwip_Interface()->machine();
 }
 
 period_task_t period_tasks[] = {
@@ -16,8 +16,9 @@ period_task_t period_tasks[] = {
 
 void All_Task_Init(void)
 {
-    __HAL_ETH_DMA_ENABLE_IT(&heth, ETH_DMA_IT_NIS | ETH_DMA_IT_R);
-    com.init();
+    Get_Com_Interface()->init();
+		Get_Lwip_Interface()->init();
+		Get_Can1_Interface()->init();
 		periodic_event_task_init();
 }
 
@@ -41,27 +42,6 @@ void periodic_event_task_process(void)
                 task->task_handler();
                 task->last_run_time_ms = current_time;
             }
-        }
-    }
-}
-
-void enable_periodic_task(EVENT_IDS event_id)
-{
-    for (int i = 0; i < PERIOD_TASKS_COUNT; i++) {
-        if (period_tasks[i].id == event_id) {
-            period_tasks[i].is_running = RUN;
-            period_tasks[i].last_run_time_ms = HAL_GetTick();
-            break;
-        }
-    }
-}
-
-void disable_periodic_task(EVENT_IDS event_id)
-{
-    for (int i = 0; i < PERIOD_TASKS_COUNT; i++) {
-        if (period_tasks[i].id == event_id) {
-            period_tasks[i].is_running = IDLE;
-            break;
         }
     }
 }

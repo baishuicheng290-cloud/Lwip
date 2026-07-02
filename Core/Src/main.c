@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "can.h"
 #include "lwip.h"
 #include "usart.h"
 #include "gpio.h"
@@ -89,6 +90,7 @@ int main(void)
   MX_GPIO_Init();
   MX_LWIP_Init();
   MX_USART1_UART_Init();
+  MX_CAN1_Init();
   /* USER CODE BEGIN 2 */
 	All_Task_Init();
   /* USER CODE END 2 */

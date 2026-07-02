@@ -27,7 +27,5 @@ typedef struct {
 
 void All_Task_Init(void);
 void periodic_event_task_process(void);
-void enable_periodic_task(EVENT_IDS event_id);
-void disable_periodic_task(EVENT_IDS event_id);
 
 #endif
